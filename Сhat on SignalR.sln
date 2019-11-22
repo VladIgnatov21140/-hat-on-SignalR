@@ -3,7 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Сhat on SignalR", "Сhat on SignalR.csproj", "{26EA84F7-D2A7-4906-B126-CDA7BF92F191}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Сhat on SignalR", "Сhat on SignalR.csproj", "{26EA84F7-D2A7-4906-B126-CDA7BF92F191}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DateLayer", "..\DateLayer\DateLayer.csproj", "{3C3B17A1-6324-4140-B562-16BD8498102B}"
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "BusinessLayer", "..\BusinessLayer\BusinessLayer.csproj", "{EA2DCD57-754B-4381-8D8D-748758B99318}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +19,14 @@ Global
 		{26EA84F7-D2A7-4906-B126-CDA7BF92F191}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{26EA84F7-D2A7-4906-B126-CDA7BF92F191}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{26EA84F7-D2A7-4906-B126-CDA7BF92F191}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3C3B17A1-6324-4140-B562-16BD8498102B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3C3B17A1-6324-4140-B562-16BD8498102B}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3C3B17A1-6324-4140-B562-16BD8498102B}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3C3B17A1-6324-4140-B562-16BD8498102B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EA2DCD57-754B-4381-8D8D-748758B99318}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EA2DCD57-754B-4381-8D8D-748758B99318}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EA2DCD57-754B-4381-8D8D-748758B99318}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EA2DCD57-754B-4381-8D8D-748758B99318}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -16,14 +16,6 @@ namespace Сhat_on_SignalR
     {
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors(options => options.AddPolicy("CorsPolicy",
-            builder =>
-            {
-                builder.AllowAnyMethod().AllowAnyHeader()
-                       .WithOrigins("https://localhost:44331")
-                       .AllowCredentials();
-            }));
-
             services.AddSignalR();
             services.AddMvc();
         }
@@ -34,15 +26,12 @@ namespace Сhat_on_SignalR
             {
                 app.UseDeveloperExceptionPage();
             }
+            app.UseDefaultFiles();
             app.UseStaticFiles();
-            app.UseRouting(); // используем систему маршрутизации
-            app.UseCors("CorsPolicy");
+            app.UseRouting();
 
             app.UseEndpoints(endpoints =>
             {
-                endpoints.MapControllerRoute(
-                    name: "default",
-                    pattern: "{controller=Home}/{action=Index}/{id?}");
                 endpoints.MapHub<GeneralGroupHub>("/generalGroupHub");
             });
 

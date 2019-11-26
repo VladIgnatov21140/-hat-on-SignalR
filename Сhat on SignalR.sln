@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.29418.71
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Сhat on SignalR", "Сhat on SignalR.csproj", "{26EA84F7-D2A7-4906-B126-CDA7BF92F191}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Сhat on SignalR", "Сhat on SignalR\Сhat on SignalR.csproj", "{26EA84F7-D2A7-4906-B126-CDA7BF92F191}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

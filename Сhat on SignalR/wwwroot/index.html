@@ -2,22 +2,52 @@
 <html>
 <head>
     <meta charset="utf-8" />
-    <title>SignalR Chat</title>
+    <title>Chat on SignalR</title>
 </head>
 <body>
-    <div id="loginBlock">
-        Введите логин:<br />
-        <input id="userName" type="text" />
-        <input id="loginBtn" type="button" value="Войти" />
-    </div><br />
 
-    <div id="header"></div><br />
-
-    <div id="inputForm">
-        <input type="text" id="message" />
-        <input type="button" id="sendBtn" value="Отправить" />
+    <div id="regForm" style="width: 30%; display:none;">
+        <div id="nameBlock">
+            <div>Введите имя:</div>
+            <div><input id="rUserName" type="text" /></div>
+        </div>
+        <div id="loginBlock">
+            <div>Введите логин:</div>
+            <div><input id="rUserLogin" type="text" /></div>
+        </div>
+        <div id="passwordBlock">
+            <div>Введите пароль:</div>
+            <div><input id="rUserPassword" type="text" /></div>
+        </div>
+        <div><input id="regBtn" type="button" value="Зарегистрироваться" /></div>
+        <div id="loginIsDefinedMess"style="display:none; color:red;">Логин уже занят</div>
     </div>
-    <div id="chatroom"></div>
+
+    <div id="authForm" style="width: 30%; display:block;">
+        <div id="loginBlock">
+            <div>Введите логин:</div>
+            <div><input id="userLogin" type="text" /></div>
+        </div>
+        <div id="passwordBlock">
+            <div>Введите пароль:</div>
+            <div><input id="userPassword" type="text" /></div>
+        </div>
+        <div><input id="authBtn" type="button" value="Войти" /></div>
+    </div>
+
+    <div id="uNotFoundMess" style="display:none; color:red;">
+        <div>Вы ввели неправильный логин или пароль</div>
+        <div><a href="#" onclick="showRegForm(this)">Зарегистрироваться</a></div>
+    </div>
+
+    <div id="sendMessageBlock" style="display:none;">
+        <div id="header"></div>
+        <div id="sendMessForm">
+            <div><input type="text" id="message" /></div>
+            <div><input type="button" id="sendBtn" value="Отправить" /></div>
+        </div>
+        <div id="chatroom"></div>
+    </div>
 
     <script src="js/signalr/signalr.min.js"></script>
     <script>
@@ -25,10 +55,10 @@
         const hubConnection = new signalR.HubConnectionBuilder()
             .withUrl(hubUrl)
             .build();
+        let userLogin = '';
         let userName = '';
         // получение сообщения от сервера
-        hubConnection.on('Send', function (message, userName) {
-
+        hubConnection.on('Send', function (message) {
             // создаем элемент <b> для имени пользователя
             let userNameElem = document.createElement("b");
             userNameElem.appendChild(document.createTextNode(userName + ': '));
@@ -40,21 +70,64 @@
 
             var firstElem = document.getElementById("chatroom").firstChild;
             document.getElementById("chatroom").insertBefore(elem, firstElem);
+        });
 
+        hubConnection.on('SetUserName', function (gettedUserName) {
+            userName = gettedUserName;
+            document.getElementById("sendMessageBlock").style.display = "block";
+            document.getElementById("header").innerHTML = '<h3>Welcome ' + userName + '</h3>';
+            document.getElementById("uNotFoundMess").style.display = "none";
+            document.getElementById("authForm").style.display = "none";
+        });
+
+        hubConnection.on('UserNotFound', function () {
+            document.getElementById("uNotFoundMess").style.display = "block";
+            document.getElementById("sendMessageBlock").style.display = "none";
+        });
+
+        hubConnection.on('Registered', function (gettedUserLogin, gettedUserPassword, gettedUserName) {
+            userLogin = gettedUserLogin;
+            userName = gettedUserName;
+            userPassword = gettedUserPassword;
+            document.getElementById("regForm").visibility = "none";
+            document.getElementById("sendMessageBlock").style.display = "block";
+            document.getElementById("header").innerHTML = '<h3>Welcome ' + userName + '</h3>';
+            document.getElementById("uNotFoundMess").style.display = "none";
+            document.getElementById("authForm").style.display = "none"; 
+            document.getElementById("loginIsDefinedMess").style.display = "none";
+        });
+
+        hubConnection.on('LoginIsDefined', function () {
+            document.getElementById("loginIsDefinedMess").style.display = "block";
         });
 
         // установка имени пользователя
-        document.getElementById("loginBtn").addEventListener("click", function (e) {
-            userName = document.getElementById("userName").value;
-            document.getElementById("header").innerHTML = '<h3>Welcome ' + userName + '</h3>';
+        document.getElementById("authBtn").addEventListener("click", function (e) {
+            userLogin = document.getElementById("userLogin").value;
+            userPassword = document.getElementById("userPassword").value;
+            hubConnection.invoke('Login', userLogin, userPassword);
         });
         // отправка сообщения на сервер
         document.getElementById("sendBtn").addEventListener("click", function (e) {
             let message = document.getElementById("message").value;
-            hubConnection.invoke('Send', message, userName);
+            hubConnection.invoke('Send', message, userLogin);
+        });
+
+        document.getElementById("regBtn").addEventListener("click", function (e) {
+            userLogin = document.getElementById("rUserLogin").value;
+            userName = document.getElementById("rUserName").value;
+            userPassword = document.getElementById("rUserPassword").value;
+            hubConnection.invoke('Register', userLogin, userPassword, userName);
         });
 
         hubConnection.start().catch(er => console.log(er.ToString()));
+
+        function showRegForm(e) {
+            document.getElementById("regForm").style.display = "block";
+            document.getElementById("authForm").style.display = "none";
+            document.getElementById("authForm").style.display = "none";
+            document.getElementById("uNotFoundMess").style.display = "none";
+        }
     </script>
 </body>
 </html>

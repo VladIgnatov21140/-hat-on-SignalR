@@ -11,10 +11,10 @@ namespace DataLayer.Contexts
         /// <summary>
         /// String for connection to database
         /// </summary>
-        private string ConnectionString {get; set;}
+        private string ConnectionString { get; set; }
 
         /// <summary>
-        /// Create context for add-migration
+        /// Creating context for add-migration
         /// </summary>
         public ApplicationContext()
         {
@@ -22,7 +22,7 @@ namespace DataLayer.Contexts
         }
 
         /// <summary>
-        /// Create context for use by app
+        /// Creating context for use by app
         /// </summary>
         /// <param name="connectionString">String for connection to database</param>
         public ApplicationContext(string connectionString)
@@ -33,10 +33,10 @@ namespace DataLayer.Contexts
         /// <summary>
         /// Data set for table Users
         /// </summary>
-        public DbSet<DTOUser> Users { get; set; }
+        public DbSet<User> Users { get; set; }
 
         /// <summary>
-        /// Set connection string for connection to database
+        /// Seting connection string for connection to database
         /// </summary>
         /// <param name="optionsBuilder">Object for set connection parameters</param>
         protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)

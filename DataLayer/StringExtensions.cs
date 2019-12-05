@@ -1,12 +1,18 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Security.Cryptography;
+﻿using System.Security.Cryptography;
 using System.Text;
 
-namespace BusinessLayer
+namespace DataLayer
 {
+    /// <summary>
+    /// Class with string's extensions
+    /// </summary>
     public static class StringExtensions
     {
+        /// <summary>
+        /// Encryption input string by MD5 method
+        /// </summary>
+        /// <param name="inputstr">String for encryption</param>
+        /// <returns>Encrypted input string by MD5 method</returns>
         public static string MD5Cryptography(this string inputstr)
         {
             MD5 md5 = MD5.Create();

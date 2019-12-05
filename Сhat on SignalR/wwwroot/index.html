@@ -58,10 +58,10 @@
         let userLogin = '';
         let userName = '';
         // получение сообщения от сервера
-        hubConnection.on('Send', function (message) {
+        hubConnection.on('Send', function (message, anotherUserName) {
             // создаем элемент <b> для имени пользователя
             let userNameElem = document.createElement("b");
-            userNameElem.appendChild(document.createTextNode(userName + ': '));
+            userNameElem.appendChild(document.createTextNode(anotherUserName + ': '));
 
             // создает элемент <p> для сообщения пользователя
             let elem = document.createElement("p");
@@ -110,7 +110,7 @@
         // отправка сообщения на сервер
         document.getElementById("sendBtn").addEventListener("click", function (e) {
             let message = document.getElementById("message").value;
-            hubConnection.invoke('Send', message, userLogin);
+            hubConnection.invoke('Send', message, userName);
         });
 
         document.getElementById("regBtn").addEventListener("click", function (e) {

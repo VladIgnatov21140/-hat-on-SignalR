@@ -85,11 +85,10 @@
             document.getElementById("sendMessageBlock").style.display = "none";
         });
 
-        hubConnection.on('Registered', function (gettedUserLogin, gettedUserPassword, gettedUserName) {
+        hubConnection.on('Registered', function (gettedUserLogin, gettedUserName) {
             userLogin = gettedUserLogin;
             userName = gettedUserName;
-            userPassword = gettedUserPassword;
-            document.getElementById("regForm").visibility = "none";
+            document.getElementById("regForm").style.display = "none";
             document.getElementById("sendMessageBlock").style.display = "block";
             document.getElementById("header").innerHTML = '<h3>Welcome ' + userName + '</h3>';
             document.getElementById("uNotFoundMess").style.display = "none";

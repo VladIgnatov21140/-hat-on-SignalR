@@ -51,7 +51,7 @@ namespace Сhat_on_SignalR.SignalR.Hubs
         public async Task Register(string userLogin,  string userPassword, string userName)
         {
             if (await BusinessServices.RegisterUserAsync(userLogin, userPassword, userName))
-                await Clients.Caller.SendAsync("Registered", userLogin, userPassword, userName);
+                await Clients.Caller.SendAsync("Registered", userLogin, userName);
                 else
                     await Clients.Caller.SendAsync("LoginIsDefined");
         }

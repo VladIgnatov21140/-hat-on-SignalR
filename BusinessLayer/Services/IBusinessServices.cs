@@ -14,15 +14,21 @@ namespace BusinessLayer.Services
         /// <param name="login">User login</param>
         /// <param name="password">User password</param>
         /// <returns>User's data</returns>
-        public Task<DTOUser> ValidateUserPasswordAsync(string login, string password);
+        public Task<DTOUser> GetUserAsync(string login, string password);
 
         /// <summary>
-        /// Method for update user's data
+        /// Method for update user's password
         /// </summary>
         /// <param name="login">User login</param>
         /// <param name="password">User password</param>
+        public Task UpdateUserPasswordAsync(string login, string password);
+
+        /// <summary>
+        /// Method for update user's name
+        /// </summary>
+        /// <param name="login">User login</param>
         /// <param name="name">User name</param>
-        public Task UpdateUserAsync(string login, string password, string name);
+        public Task UpdateUserNameAsync(string login, string name);
 
         /// <summary>
         /// Method for register user

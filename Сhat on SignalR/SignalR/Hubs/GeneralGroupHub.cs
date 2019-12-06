@@ -30,7 +30,7 @@ namespace Сhat_on_SignalR.SignalR.Hubs
         /// be caused SetUserName and return user's name else UserNotFound.</returns>
         public async Task Login(string userLogin, string userPassword)
         {
-            DTOUser User = await BusinessServices.ValidateUserPasswordAsync(userLogin, userPassword);
+            DTOUser User = await BusinessServices.GetUserAsync(userLogin, userPassword);
             if (User.Login != null)
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, "GeneralGroup");

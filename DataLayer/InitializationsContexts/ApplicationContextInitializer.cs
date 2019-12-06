@@ -1,4 +1,5 @@
 ﻿using DataLayer.Contexts;
+using DataLayer.Extensions;
 using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
@@ -15,9 +16,9 @@ namespace DataLayer.ContextsInitialization
         /// Migrate database and initialize database tables
         /// </summary>
         /// <param name="ConnectionString">String for connection to database</param>
-        public void InitializeApplicationContext(string ConnectionString)
+        public void InitializeApplicationContext()
         {
-            using (ApplicationContext db = new ApplicationContext(ConnectionString))
+            using (ApplicationContext db = new ApplicationContext())
             {
                 db.Database.Migrate();
                 InitializeUsersTable(db);

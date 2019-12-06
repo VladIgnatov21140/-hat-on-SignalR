@@ -13,27 +13,14 @@ namespace DataLayer.Services
     public class DataServices : IDataServices
     {
         /// <summary>
-        /// String for connection to database
-        /// </summary>
-        public string ConnectionString { get; set; }
-
-        /// <summary>
-        /// Getting and setting connection string for connection to database
-        /// </summary>
-        public DataServices(string connectionString = "ConnectionString")
-        {
-            ConnectionString = connectionString;
-        }
-
-        /// <summary>
         /// Method for adding user in database
         /// </summary>
         /// <param name="login">User's login</param>
         /// <param name="password">User's password in md5</param>
         /// <param name="name">User's name</param>
-        public async Task AddUserAsync(string login, Guid password, string name)
+        public async Task CreateUserAsync(string login, Guid password, string name)
         {
-            using (ApplicationContext db = new ApplicationContext(ConnectionString))
+            using (ApplicationContext db = new ApplicationContext())
             {
                 await db.Database.ExecuteSqlRawAsync($"INSERT INTO Users (Login, Password, Name) Values ('{login}', '{password}', '{name}');");
             }
@@ -45,7 +32,7 @@ namespace DataLayer.Services
         /// <param name="userid">User's index</param>
         public async Task DeleteUserAsync(int userid)
         {
-            using (ApplicationContext db = new ApplicationContext(ConnectionString))
+            using (ApplicationContext db = new ApplicationContext())
             {
                 await db.Database.ExecuteSqlRawAsync($"DELETE Users WHERE Id = {userid};");
             }
@@ -66,32 +53,46 @@ namespace DataLayer.Services
         }
 
         /// <summary>
-        /// Method for updating user's data in a database appropriate inputted a user's login
-        /// </summary>
-        /// <param name="login">User's login</param>
-        /// <param name="password">User's password in md5</param>
-        /// <param name="name">User's name</param>
-        public async Task UpdateUserAsync(string login, Guid password, string name)
-        {
-            using (ApplicationContext db = new ApplicationContext(ConnectionString))
-            {
-                await db.Database.ExecuteSqlRawAsync(
-                    $"UPDATE Users SET Login = '{login}', Password = '{password}', Name = '{name}' WHERE Login = {login};"
-                );
-            }
-        }
-
-        /// <summary>
         /// Method for getting users' data in list from a database appropriate inputted a login
         /// </summary>
         /// <param name="login">User's login</param>
         /// <param name="password">User's password in md5</param>
         public async Task<List<User>> GetUserAsync(string login)
         {
-            using (ApplicationContext db = new ApplicationContext(ConnectionString))
+            using (ApplicationContext db = new ApplicationContext())
             {
                 var dTOUser = await db.Users.FromSqlRaw($"SELECT * FROM Users WHERE Login = '{login}';").ToListAsync();
                 return dTOUser;
+            }
+        }
+
+        /// <summary>
+        /// Method for updating user's password in a database appropriate inputted a user's login
+        /// </summary>
+        /// <param name="login">User's login</param>
+        /// <param name="password">User's password in md5</param>
+        public async Task UpdateUserPasswordAsync(string login, Guid password)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                await db.Database.ExecuteSqlRawAsync(
+                    $"UPDATE Users SET Password = '{password}' WHERE Login = {login};"
+                );
+            }
+        }
+
+        /// <summary>
+        /// Method for updating user's name in a database appropriate inputted a user's login
+        /// </summary>
+        /// <param name="login">User's login</param>
+        /// <param name="name">User's name</param>
+        public async Task UpdateUserNameAsync(string login, string name)
+        {
+            using (ApplicationContext db = new ApplicationContext())
+            {
+                await db.Database.ExecuteSqlRawAsync(
+                    $"UPDATE Users SET Name = '{name}' WHERE Login = {login};"
+                );
             }
         }
     }

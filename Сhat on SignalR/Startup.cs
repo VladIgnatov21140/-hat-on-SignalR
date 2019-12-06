@@ -23,10 +23,10 @@ namespace Сhat_on_SignalR
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddBusinessLibraryCollection();
-            services.AddDataLibraryCollection(Configuration.GetSection("ConnectionStrings").GetValue<string>("DefaultConnection"));
+            services.AddDataLibraryCollection();
             ApplicationContextInitializer appInit = new ApplicationContextInitializer();
             {
-                appInit.InitializeApplicationContext(Configuration.GetSection("ConnectionStrings").GetValue<string>("DefaultConnection"));
+                appInit.InitializeApplicationContext();
             }
             services.AddSignalR();
             services.AddMvc();

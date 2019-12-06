@@ -1,5 +1,5 @@
 ﻿using BusinessLayer.Models;
-using DataLayer;
+using DataLayer.Extensions;
 using DataLayer.Services;
 using System;
 using System.Threading.Tasks;
@@ -31,7 +31,7 @@ namespace BusinessLayer.Services
         /// <param name="login">User login</param>
         /// <param name="password">User password</param>
         /// <returns>User's data</returns>
-        public async Task<DTOUser> ValidateUserPasswordAsync(string login, string password)
+        public async Task<DTOUser> GetUserAsync(string login, string password)
         {
             var User = await DataServices.GetUserAsync(login, new Guid(password.MD5Cryptography()));
             if (User.Count > 0)
@@ -44,18 +44,26 @@ namespace BusinessLayer.Services
                 };
                 else
                     return new DTOUser { };
-
         }
 
         /// <summary>
-        /// Method for update user's data
+        /// Method for update user's password
         /// </summary>
         /// <param name="login">User login</param>
         /// <param name="password">User password</param>
-        /// <param name="name">User name</param>
-        public async Task UpdateUserAsync(string login, string password, string name)
+        public async Task UpdateUserPasswordAsync(string login, string password)
         {
-            await DataServices.UpdateUserAsync(login, new Guid(password.MD5Cryptography()), name);
+            await DataServices.UpdateUserPasswordAsync(login, new Guid(password.MD5Cryptography()));
+        }
+
+        /// <summary>
+        /// Method for update user's name
+        /// </summary>
+        /// <param name="login">User login</param>
+        /// <param name="name">User name</param>
+        public async Task UpdateUserNameAsync(string login, string name)
+        {
+            await DataServices.UpdateUserNameAsync(login, name);
         }
 
         /// <summary>
@@ -72,7 +80,7 @@ namespace BusinessLayer.Services
             var User = await DataServices.GetUserAsync(login);
             if (User.Count == 0)
                 {
-                    await DataServices.AddUserAsync(login, GuidPassword, name);
+                    await DataServices.CreateUserAsync(login, GuidPassword, name);
                     return true;
                 }   
                 else

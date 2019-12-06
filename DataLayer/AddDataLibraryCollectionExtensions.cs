@@ -12,9 +12,9 @@ namespace DataLayer
         /// Method for adding data layer services dependency injection
         /// </summary>
         /// <param name="service">App services</param>
-        public static IServiceCollection AddDataLibraryCollection(this IServiceCollection service, string connectionString = "ConnectionString")
+        public static IServiceCollection AddDataLibraryCollection(this IServiceCollection service)
         {
-            service.AddTransient<IDataServices, DataServices>(provider => new DataServices(connectionString));
+            service.AddTransient<IDataServices, DataServices>(provider => new DataServices());
             return service;
         }
 

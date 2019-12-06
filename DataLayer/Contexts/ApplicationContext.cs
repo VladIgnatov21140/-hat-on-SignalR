@@ -1,5 +1,7 @@
-﻿using DataLayer.Models;
+﻿using DataLayer.Extensions;
+using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
 
 namespace DataLayer.Contexts
 {
@@ -9,25 +11,11 @@ namespace DataLayer.Contexts
     public class ApplicationContext : DbContext
     {
         /// <summary>
-        /// String for connection to database
-        /// </summary>
-        private string ConnectionString { get; set; }
-
-        /// <summary>
-        /// Creating context for add-migration
+        /// Creating context for using by app and add-migration
         /// </summary>
         public ApplicationContext()
         {
-            ConnectionString = "Server=DESKTOP-COESAPT\\SQLEXPRESS;Database=ChatDB;Trusted_Connection=True;MultipleActiveResultSets=true";
-        }
 
-        /// <summary>
-        /// Creating context for use by app
-        /// </summary>
-        /// <param name="connectionString">String for connection to database</param>
-        public ApplicationContext(string connectionString)
-        {
-            ConnectionString = connectionString;
         }
 
         /// <summary>
@@ -43,7 +31,7 @@ namespace DataLayer.Contexts
         {
             if (!optionsBuilder.IsConfigured)
             {
-                optionsBuilder.UseSqlServer(ConnectionString);
+                optionsBuilder.UseSqlServer(new string("").GetConnectionString());
             }
         }
     }

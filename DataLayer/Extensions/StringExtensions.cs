@@ -1,7 +1,8 @@
-﻿using System.Security.Cryptography;
+﻿using Microsoft.Extensions.Configuration;
+using System.Security.Cryptography;
 using System.Text;
 
-namespace DataLayer
+namespace DataLayer.Extensions
 {
     /// <summary>
     /// Class with string's extensions
@@ -23,6 +24,17 @@ namespace DataLayer
                 resultstring.Append(data[i].ToString("x2"));
             }
             return resultstring.ToString();
+        }
+
+        /// <summary>
+        /// Set in input string connection string
+        /// </summary>
+        /// <param name="inputstr">String for setting</param>
+        /// <returns>Connection sting</returns>
+        public static string GetConnectionString(this string inputstr)
+        {
+            var Configuration = new ConfigurationBuilder().AddJsonFile("appsettings.json").Build();
+            return Configuration["ConnectionStrings:DefaultConnection"];
         }
     }
 }

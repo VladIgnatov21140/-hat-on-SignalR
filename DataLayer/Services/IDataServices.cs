@@ -1,6 +1,5 @@
 ﻿using DataLayer.Models;
 using System;
-using System.Collections.Generic;
 using System.Threading.Tasks;
 
 namespace DataLayer.Services
@@ -11,18 +10,18 @@ namespace DataLayer.Services
     public interface IDataServices
     {
         /// <summary>
-        /// Method for getting users' data in list from a database appropriate inputted a login
+        /// Method for getting users' data from a database appropriate inputted a login
         /// </summary>
         /// <param name="login">User's login</param>
         /// <param name="password">User's password in md5</param>
-        public Task<List<User>> GetUserAsync(string login);
+        public Task<User> GetUserAsync(string login);
 
         /// <summary>
-        /// Method for getting users' data in list from a database appropriate inputted a login and password
+        /// Method for getting users' data from a database appropriate inputted a login and password
         /// </summary>
         /// <param name="login">User's login</param>
         /// <param name="password">User's password in md5</param>
-        public Task<List<User>> GetUserAsync(string login, Guid password);
+        public Task<User> GetUserAsync(string login, Guid password);
 
         /// <summary>
         /// Method for updating user's password in a database appropriate inputted a user's login

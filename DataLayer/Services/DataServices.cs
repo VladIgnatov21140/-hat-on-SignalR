@@ -2,7 +2,7 @@
 using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Collections.Generic;
+using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataLayer.Services
@@ -39,30 +39,30 @@ namespace DataLayer.Services
         }
 
         /// <summary>
-        /// Method for getting users' data in list from a database appropriate inputted a login and password
+        /// Method for getting users' data from a database appropriate inputted a login and password
         /// </summary>
         /// <param name="login">User's login</param>
         /// <param name="password">User's password in md5</param>
-        public async Task<List<User>> GetUserAsync(string login, Guid password)
+        public async Task<User> GetUserAsync(string login, Guid password)
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                var dTOUser = await db.Users.FromSqlRaw($"SELECT * FROM Users WHERE Login = '{login}' AND Password = '{password}';").ToListAsync();
-                return dTOUser;
+                var dTOUser = await db.Users.FromSqlRaw($"SELECT TOP 1 * FROM Users WHERE Login = '{login}' AND Password = '{password}';").ToListAsync();
+                return dTOUser.FirstOrDefault();
             }
         }
 
         /// <summary>
-        /// Method for getting users' data in list from a database appropriate inputted a login
+        /// Method for getting users' data from a database appropriate inputted a login
         /// </summary>
         /// <param name="login">User's login</param>
         /// <param name="password">User's password in md5</param>
-        public async Task<List<User>> GetUserAsync(string login)
+        public async Task<User> GetUserAsync(string login)
         {
             using (ApplicationContext db = new ApplicationContext())
             {
-                var dTOUser = await db.Users.FromSqlRaw($"SELECT * FROM Users WHERE Login = '{login}';").ToListAsync();
-                return dTOUser;
+                var dTOUser = await db.Users.FromSqlRaw($"SELECT TOP 1 * FROM Users WHERE Login = '{login}';").ToListAsync();
+                return dTOUser.FirstOrDefault();
             }
         }
 

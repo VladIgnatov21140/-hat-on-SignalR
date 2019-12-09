@@ -31,7 +31,7 @@ namespace Сhat_on_SignalR.SignalR.Hubs
         public async Task Login(string userLogin, string userPassword)
         {
             DTOUser User = await BusinessServices.GetUserAsync(userLogin, userPassword);
-            if (User.Login != null)
+            if (User.Name != null)
             {
                 await Groups.AddToGroupAsync(Context.ConnectionId, "GeneralGroup");
                 await Clients.Caller.SendAsync("SetUserName", User.Name.ToString());

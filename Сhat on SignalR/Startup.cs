@@ -32,12 +32,13 @@ namespace Сhat_on_SignalR
             services.AddMvc();
         }
         
-        public void Configure(IApplicationBuilder app, IWebHostEnvironment env, IBusinessServices businessServices)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
                 app.UseDeveloperExceptionPage();
             }
+
             app.UseDefaultFiles();
             app.UseStaticFiles();
             app.UseRouting();

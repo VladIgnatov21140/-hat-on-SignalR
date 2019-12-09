@@ -34,16 +34,18 @@ namespace BusinessLayer.Services
         public async Task<DTOUser> GetUserAsync(string login, string password)
         {
             var User = await DataServices.GetUserAsync(login, new Guid(password.MD5Cryptography()));
-            if (User.Count > 0)
+            if (User != null)
+            {
                 return new DTOUser
                 {
-                    Id = User[0].Id,
-                    Login = User[0].Login,
-                    Password = User[0].Password,
-                    Name = User[0].Name
+                    Id = User.Id,
+                    Login = User.Login,
+                    Password = User.Password,
+                    Name = User.Name
                 };
-                else
-                    return new DTOUser { };
+            }
+            else
+                return new DTOUser();
         }
 
         /// <summary>
@@ -78,7 +80,7 @@ namespace BusinessLayer.Services
         {
             Guid GuidPassword = new Guid(password.MD5Cryptography());
             var User = await DataServices.GetUserAsync(login);
-            if (User.Count == 0)
+            if (User.Name != null)
                 {
                     await DataServices.CreateUserAsync(login, GuidPassword, name);
                     return true;

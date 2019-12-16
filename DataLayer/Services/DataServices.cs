@@ -2,7 +2,6 @@
 using DataLayer.Models;
 using Microsoft.EntityFrameworkCore;
 using System;
-using System.Linq;
 using System.Threading.Tasks;
 
 namespace DataLayer.Services
@@ -12,6 +11,12 @@ namespace DataLayer.Services
     /// </summary>
     public class DataServices : IDataServices
     {
+        private ApplicationContext db;
+
+        public DataServices(ApplicationContext context)
+        {
+            db = context;
+        }
         /// <summary>
         /// Method for adding user in database
         /// </summary>
@@ -20,10 +25,9 @@ namespace DataLayer.Services
         /// <param name="name">User's name</param>
         public async Task CreateUserAsync(string login, Guid password, string name)
         {
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                await db.Database.ExecuteSqlRawAsync($"INSERT INTO Users (Login, Password, Name) Values ('{login}', '{password}', '{name}');");
-            }
+            var user = new User { Login = login, Name = name, Password = password };
+            db.Users.Add(user);
+            await db.SaveChangesAsync();
         }
 
         /// <summary>
@@ -32,9 +36,11 @@ namespace DataLayer.Services
         /// <param name="userid">User's index</param>
         public async Task DeleteUserAsync(int userid)
         {
-            using (ApplicationContext db = new ApplicationContext())
+            var user = await db.Users.SingleOrDefaultAsync(el => el.Id == userid);
+            if (user != null)
             {
-                await db.Database.ExecuteSqlRawAsync($"DELETE Users WHERE Id = {userid};");
+                db.Users.Remove(user);
+                await db.SaveChangesAsync();
             }
         }
 
@@ -45,11 +51,8 @@ namespace DataLayer.Services
         /// <param name="password">User's password in md5</param>
         public async Task<User> GetUserAsync(string login, Guid password)
         {
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                var dTOUser = await db.Users.FromSqlRaw($"SELECT TOP 1 * FROM Users WHERE Login = '{login}' AND Password = '{password}';").ToListAsync();
-                return dTOUser.FirstOrDefault();
-            }
+            var user = await db.Users.SingleOrDefaultAsync(el => el.Login == login && el.Password == password);
+            return user;
         }
 
         /// <summary>
@@ -59,11 +62,8 @@ namespace DataLayer.Services
         /// <param name="password">User's password in md5</param>
         public async Task<User> GetUserAsync(string login)
         {
-            using (ApplicationContext db = new ApplicationContext())
-            {
-                var dTOUser = await db.Users.FromSqlRaw($"SELECT TOP 1 * FROM Users WHERE Login = '{login}';").ToListAsync();
-                return dTOUser.FirstOrDefault();
-            }
+            var user = await db.Users.SingleOrDefaultAsync(el => el.Login == login);
+            return user;
         }
 
         /// <summary>
@@ -73,11 +73,11 @@ namespace DataLayer.Services
         /// <param name="password">User's password in md5</param>
         public async Task UpdateUserPasswordAsync(string login, Guid password)
         {
-            using (ApplicationContext db = new ApplicationContext())
+            var user = await db.Users.SingleOrDefaultAsync(el => el.Login == login);
+            if (user != null)
             {
-                await db.Database.ExecuteSqlRawAsync(
-                    $"UPDATE Users SET Password = '{password}' WHERE Login = {login};"
-                );
+                user.Password = password;
+                await db.SaveChangesAsync();
             }
         }
 
@@ -88,11 +88,11 @@ namespace DataLayer.Services
         /// <param name="name">User's name</param>
         public async Task UpdateUserNameAsync(string login, string name)
         {
-            using (ApplicationContext db = new ApplicationContext())
+            var user = await db.Users.SingleOrDefaultAsync(el => el.Login == login);
+            if (user != null)
             {
-                await db.Database.ExecuteSqlRawAsync(
-                    $"UPDATE Users SET Name = '{name}' WHERE Login = {login};"
-                );
+                user.Name = name;
+                await db.SaveChangesAsync();
             }
         }
     }
